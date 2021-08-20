@@ -1,0 +1,169 @@
+{% extends 'layouts/base.html' %}
+{% load my_tags %}
+{% load static %}
+
+{% block content %}
+    <div class="Checkout_section mt-60">
+        <div class="container">
+            <div class="checkout_form">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <h3>Billing Details</h3>
+                            {{ form.errors }}
+                            <div class="row">
+                                <div class="col-lg-6 mb-20">
+                                    <label>First Name <span>*</span></label>
+                                    <input value="{{ profile.first_name|default:'' }}" name="first_name" type="text">
+                                </div>
+                                <div class="col-lg-6 mb-20">
+                                    <label>Last Name <span>*</span></label>
+                                    <input value="{{ profile.last_name|default:'' }}" name="last_name" type="text">
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label>Company Name</label>
+                                    <input value="{{ profile.company_name|default:'' }}" name="company_name"
+                                           type="text">
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label for="country">country <span>*</span></label>
+                                    <input value="{{ profile.country|default:'' }}" name="country" type="text">
+                                </div>
+
+                                <div class="col-12 mb-20">
+                                    <label>Street address <span>*</span></label>
+                                    <input value="{{ profile.street_address1|default:'' }}" name="street_address1"
+                                           placeholder="House number and street name" type="text">
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <input value="{{ profile.street_address2|default:'' }}" name="street_address2"
+                                           placeholder="Apartment, suite, unit etc. (optional)" type="text">
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label>Town / City <span>*</span></label>
+                                    <input value="{{ profile.city|default:'' }}" name="city" type="text">
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label>State / County <span>*</span></label>
+                                    <input value="{{ profile.state|default:'' }}" name="state" type="text">
+                                </div>
+                                <div class="col-lg-6 mb-20">
+                                    <label>Phone<span>*</span></label>
+                                    <input value="{{ profile.phone|default:'' }}" name="phone" type="text">
+                                </div>
+                                <div class="col-lg-6 mb-20">
+                                    <label> Email Address <span>*</span></label>
+                                    <input value="{{ profile.email|default:'' }}" name="email" type="text">
+                                </div>
+
+                                <div class="col-12 mb-20 accordion" id="accordionExample">
+                                    <input id="address" type="checkbox" data-target="createp_account"/>
+                                    <label class="righ_0" for="address" data-toggle="collapse"
+                                           data-target="#collapseTwo" aria-controls="collapseTwo">Ship to a different
+                                        address?</label>
+
+                                    <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
+                                        <div class="row">
+                                            <div class="col-lg-6 mb-20">
+                                                <label>First Name <span>*</span></label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="col-lg-6 mb-20">
+                                                <label>Last Name <span>*</span></label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="col-12 mb-20">
+                                                <label>Company Name</label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="col-12 mb-20">
+                                                <div class="select_form_select">
+                                                    <label for="countru_name">country <span>*</span></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mb-20">
+                                                <label>Street address <span>*</span></label>
+                                                <input placeholder="House number and street name" type="text">
+                                            </div>
+                                            <div class="col-12 mb-20">
+                                                <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
+                                            </div>
+                                            <div class="col-12 mb-20">
+                                                <label>Town / City <span>*</span></label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="col-12 mb-20">
+                                                <label>State / County <span>*</span></label>
+                                                <input type="text">
+                                            </div>
+                                            <div class="col-lg-6 mb-20">
+                                                <label>Phone<span>*</span></label>
+                                                <input type="text">
+
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label> Email Address <span>*</span></label>
+                                                <input type="text">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="order-notes">
+                                        <label for="order_note">Order Notes</label>
+                                        <textarea id="order_note" rows="2"
+                                                  placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+
+                                <h3>Your order</h3>
+                                <div class="order_table table-responsive">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for product in products %}
+                                            <tr>
+                                                <td> {{ product.title }}</td>
+                                                </td>
+                                                <td> ${{ product.real_price }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Cart Subtotal</th>
+                                            <td>${% cart_price request %}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Shipping</th>
+                                            <td><strong>$5.00</strong></td>
+                                        </tr>
+                                        <tr class="order_total">
+                                            <th>Order Total</th>
+                                            <td><strong>${% cart_price request %}</strong></td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                    <div class="order_button">
+                                        <button type="submit">Proceed to buy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

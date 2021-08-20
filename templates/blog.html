@@ -1,0 +1,107 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!--blog body area start-->
+    <div class="blog_details mt-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="blog_wrapper">
+                        <div class="section-title">
+                            <h2>
+                                {% if request.GET.tag %}
+                                    #{{ request.GET.tag }}
+                                {% else %}
+                                    All Blog
+                                {% endif %}
+                            </h2>
+                        </div>
+                        <div class="row">
+                            {% for post in object_list %}
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                                    {% include 'layouts/posts_block.html' %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12">
+                    <div class="blog_sidebar_widget">
+                        <div class="widget_list widget_search">
+                            <h3>Search</h3>
+                            <form action="#">
+                                <input name="s" value="{{ request.GET.s }}" placeholder="Search..." type="text">
+                                <button type="submit">search</button>
+                            </form>
+                        </div>
+                        <div class="widget_list widget_post">
+                            <h3>Recent Posts</h3>
+                            {% for blog in recent_posts %}
+                                <div class="post_wrapper">
+                                    <div class="post_thumb">
+                                        <a href="blog-details.html"><img src="{{ blog.image.url }}" alt=""></a>
+                                    </div>
+                                    <div class="post_info">
+                                        <h3><a href="blog-details.html">{{ blog.title }}</a></h3>
+                                        <span>{{ blog.created_at|date:'M d, Y' }} </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <div class="widget_list widget_tag">
+                            <h3>Tag products</h3>
+                            <div class="tag_widget">
+                                <ul>
+                                    {% for tag in tags %}
+                                        <li>
+                                            <a onclick="addUrlParameter('tag', '{{ tag.title }}')">{{ tag.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--blog section area end-->
+
+
+    <!--blog pagination area start-->
+    <div class="blog_pagination">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="pagination">
+                        {% for page in page_obj.paginator.page_range %}
+                            &nbsp;
+                            <ul>
+                                <li class=" {% if page == page_obj.number %} current {% endif %}"><a
+                                        href="?page={{ page }}">{{ page }}</a></li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--blog pagination area end-->
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function addUrlParameter(name, value) {
+            let searchParams = new URLSearchParams(window.location.search)
+            if (searchParams.has(name) && searchParams.get(name) === value) {
+                searchParams.delete(name)
+            } else {
+                searchParams.set(name, value)
+            }
+            window.location.search = searchParams.toString()
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+{% endblock %}

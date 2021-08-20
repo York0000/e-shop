@@ -1,0 +1,221 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load my_tags %}
+
+{% block extra_css %}
+    <style>
+        a:hover {
+            cursor: pointer;
+        }
+
+        .shop__sidebar__color {
+            padding-top: 15px;
+        }
+
+        .shop__sidebar__color label {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 10px;
+            display: inline-block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .shop__sidebar__color label.c-1 {
+            background: #0b090c;
+        }
+
+        .shop__sidebar__color label.c-2 {
+            background: #20315f;
+        }
+
+        .shop__sidebar__color label.c-3 {
+            background: #f1af4d;
+        }
+
+        .shop__sidebar__color label.c-4 {
+            background: #636068;
+        }
+
+        .shop__sidebar__color label.c-5 {
+            background: #57594d;
+        }
+
+        .shop__sidebar__color label.c-6 {
+            background: #e8bac4;
+        }
+
+        .shop__sidebar__color label.c-7 {
+            background: #d6c1d7;
+        }
+
+        .shop__sidebar__color label.c-8 {
+            background: #ed1c24;
+        }
+
+        .shop__sidebar__color label.c-9 {
+            background: #ffffff;
+        }
+
+        .shop__sidebar__color label:after {
+            position: absolute;
+            left: -3px;
+            top: -3px;
+            height: 36px;
+            width: 36px;
+            border: 1px solid #e5e5e5;
+            content: "";
+            border-radius: 50%;
+        }
+
+        .shop__sidebar__color label input {
+            position: absolute;
+            visibility: hidden;
+        }
+    </style>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
+{% endblock %}
+
+{% block content %}
+    <section class="pt-60 pb-30 gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="section-title">
+                        <h2>Products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for product in object_list %}
+                    <div class="col-lg-3">
+                        {% include 'layouts/product_block.html' %}
+                    </div>
+                {% endfor %}
+
+                <div class="col-lg-3" style="margin-left: auto;">
+                    <div class="blog_sidebar_widget">
+                        <div class="widget_list widget_search">
+                            <h3>Search</h3>
+                            <form action="#">
+                                <input name="q" value="{{ request.GET.q }}" placeholder="Search..." type="text">
+                                <button type="submit">search</button>
+                            </form>
+                            <div class="my-2">
+                                <a class="text-dark" href="{% url 'products:list' %}">Clear filter</a>
+                            </div>
+                        </div>
+                        <input type="text" class="js-range-slider" name="my_range" value=""/>
+                        <div class="shop__sidebar__color">
+                            <h3 style="font-family:sans-serif">Color</h3>
+                            {% for color in colors %}
+                                <label style="background: {{ color.code }}">
+                                    <input onclick="addUrlParameter('color', {{ color.pk }})" type="radio">
+                                </label>
+                            {% endfor %}
+                        </div>
+                        {#                        <div class="widget_list widget_post">#}
+                        {#                            <h3>Recent Posts</h3>#}
+                        {#                            <div class="post_wrapper">#}
+                        {#                                <div class="post_thumb">#}
+                        {#                                    <a href="blog-details.html"><img src="{%static 'img/blog/blog1.jpg' %}" alt=""></a>#}
+                        {#                                </div>#}
+                        {#                                <div class="post_info">#}
+                        {#                                    <h3><a href="blog-details.html">Blog image post</a></h3>#}
+                        {#                                    <span>March 16, 2018 </span>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                             <div class="post_wrapper">#}
+                        {#                                <div class="post_thumb">#}
+                        {#                                    <a href="blog-details.html"><img src="{%static 'img/blog/blog2.jpg' %}" alt=""></a>#}
+                        {#                                </div>#}
+                        {#                                <div class="post_info">#}
+                        {#                                    <h3><a href="blog-details.html">Post with Gallery</a></h3>#}
+                        {#                                    <span>March 16, 2018 </span>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                             <div class="post_wrapper">#}
+                        {#                                <div class="post_thumb">#}
+                        {#                                    <a href="blog-details.html"><img src="{%static 'img/blog/blog1.jpg' %}" alt=""></a>#}
+                        {#                                </div>#}
+                        {#                                <div class="post_info">#}
+                        {#                                    <h3><a href="blog-details.html">Post with Audio</a></h3>#}
+                        {#                                    <span>March 16, 2018 </span>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        <div class="widget_list widget_tag">
+                            <h3>Product category</h3>
+                            <div class="tag_widget">
+                                <ul>
+                                    {% for category in categories %}
+                                        <li>
+                                            <a {% if request.GET.cat == category.pk|stringformat:'i' %}
+                                                style="color: white; background-color: #111;"
+                                            {% endif %}
+                                                onclick="addUrlParameter('cat', '{{ category.pk }}')">{{ category.title }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="blog_pagination">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="pagination">
+                        {% for page in page_obj.paginator.page_range %}
+                            &nbsp;
+                            <ul>
+                                <li class=" {% if page == page_obj.number %} current {% endif %}"><a
+                                        onclick="addUrlParameter('page', '{{ page }}')">{{ page }}</a>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function addUrlParameter(name, value) {
+            let searchParams = new URLSearchParams(window.location.search)
+            if (searchParams.has(name) && searchParams.get(name) === value) {
+                searchParams.delete(name)
+            } else {
+                searchParams.set(name, value)
+            }
+            window.location.search = searchParams.toString()
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script>
+        $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            grid: true,
+            min: {{min_price}},
+            max: {{ max_price }},
+            from: {% get_price_url request 0 %},
+            to: {% get_price_url request 1 %},
+            prefix: "$",
+            onFinish(data) {
+                let result = data.from.toString() + ';' + data.to.toString();
+                addUrlParameter('price', result)
+            }
+        });
+    </script>
+{% endblock %}
+

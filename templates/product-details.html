@@ -1,0 +1,193 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load my_tags %}
+{% block extra_css %}
+    <style>
+        .shop__sidebar__color {
+            padding-top: 15px;
+        }
+
+        .shop__sidebar__color label {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 10px;
+            display: inline-block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .shop__sidebar__color label.c-1 {
+            background: #0b090c;
+        }
+
+        .shop__sidebar__color label.c-2 {
+            background: #20315f;
+        }
+
+        .shop__sidebar__color label.c-3 {
+            background: #f1af4d;
+        }
+
+        .shop__sidebar__color label.c-4 {
+            background: #636068;
+        }
+
+        .shop__sidebar__color label.c-5 {
+            background: #57594d;
+        }
+
+        .shop__sidebar__color label.c-6 {
+            background: #e8bac4;
+        }
+
+        .shop__sidebar__color label.c-7 {
+            background: #d6c1d7;
+        }
+
+        .shop__sidebar__color label.c-8 {
+            background: #ed1c24;
+        }
+
+        .shop__sidebar__color label.c-9 {
+            background: #ffffff;
+        }
+
+        .shop__sidebar__color label:after {
+            position: absolute;
+            left: -3px;
+            top: -3px;
+            height: 36px;
+            width: 36px;
+            border: 1px solid #e5e5e5;
+            content: "";
+            border-radius: 50%;
+        }
+
+        .shop__sidebar__color label input {
+            position: absolute;
+            visibility: hidden;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!--product details start-->
+    <div class="product_details mt-60 mb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="product-details-tab">
+                        <div id="img-1" class="zoomWrapper single-zoom">
+                            <a href="#">
+                                <img id="zoom1" src="{{ object.image.url }}"
+                                     data-zoom-image="{{ object.image.url }}" alt="big-1">
+                            </a>
+                        </div>
+                        <div class="single-zoom-thumb">
+                            <ul class="s-tab-zoom owl-carousel single-product-active" id="gallery_01">
+                                {% for i in object.images.all %}
+                                    <li>
+                                        <a href="#" class="elevatezoom-gallery active" data-update=""
+                                           data-image="{{ i.image.url }}"
+                                           data-zoom-image="{{ i.image.url }}">
+                                            <img src="{{ i.image.url }}" alt="zo-th-1"/>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="product_d_right">
+                        <form action="#">
+
+                            <h1>{{ product.title }}</h1>
+                            <div class=" product_ratting">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                    <li class="review"><a href="#"> (250 reviews) </a></li>
+                                </ul>
+
+                            </div>
+                            <div class="price_box">
+                                <span class="current_price">${{ object.real_price }}</span>
+                                <span class="old_price">${% if object.is_discount %}
+                                    {{ object.price }}{% endif %}</span>
+
+                            </div>
+                            <div class="product_desc">
+                                <p>{{ object.short_description }}</p>
+                            </div>
+                            <div class="shop__sidebar__color">
+                                <h3>Color</h3>
+                                <ul>
+                                    {% for color in object.colors.all %}
+                                        <label style="background: {{ color.code }}">
+                                            <input value="{{ color.code }}" name="color" type="radio">
+                                        </label>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="product_variant quantity">
+                                <label>quantity</label>
+                                <input min="1" max="100" value="1" type="number">
+                                <a href="{% url 'products:add-to-cart' pk=object.pk %}?next={{ request.path }}?{{ request.GET.urlencode }}">
+                                    {% if object|in_cart:request %}
+                                        <button class="button" type="button">remove from cart</button>
+                                    {% else %}
+                                        <button class="button" type="button">add to cart</button>
+                                    {% endif %}
+                                </a>
+                                <a href="{% url 'products:add-wishlist' pk=object.pk %}?next={{ request.path }}?{{ request.GET.urlencode }}">
+                                    {% if object|in_wishlist:request %}
+                                        <button class="button" type="button">remove from wishlist</button>
+                                    {% else %}
+                                        <button class="button" type="button">add to wishlist</button>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="product_meta">
+                                <span>Category: <a href="#">{{ object.category.title }}</a></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--product details end-->
+
+    <!--product info start-->
+    <div class="product_d_info mb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="product_d_inner">
+                        <div class="product_info_button">
+                            <ul class="nav">
+                                <li>
+                                    <a class="active" href="#info" aria-controls="info" aria-selected="false">Description</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="info">
+                                <div class="product_info_content">
+                                    <p>{{ object.long_description|safe }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--product info end-->
+{% endblock %}

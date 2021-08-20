@@ -1,0 +1,35 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Drophunt</title>
+    <meta name="description" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+{% include 'layouts/header.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'layouts/footer.html' %}
+
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+</html>

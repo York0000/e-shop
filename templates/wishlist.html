@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+{% load my_tags %}
+
+{% block content %}
+    <section class="pt-60 pb-30 gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="section-title">
+                        <h2>Wishlist</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for product in object_list %}
+                    <div class="col-lg-3">
+                        {% include 'layouts/product_block.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <div class="blog_pagination">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="pagination">
+                        {% for page in page_obj.paginator.page_range %}
+                            &nbsp;
+                            <ul>
+                                <li class=" {% if page == page_obj.number %} current {% endif %}"><a
+                                        onclick="addUrlParameter('page', '{{ page }}')">{{ page }}</a>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

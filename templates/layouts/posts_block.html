@@ -1,0 +1,23 @@
+{% load my_tags %}
+{% load static %}
+
+<a href="{% url 'posts:detail' pk=post.pk %}">
+    <article class="single_blog mb-60">
+        <figure>
+            <div class="blog_thumb">
+                <img src="{{ post.image.url }}">
+            </div>
+            <figcaption class="blog_content">
+                <h3>{{ post.title }}</h3>
+                <div class="blog_meta">
+                    <span class="author">Posted by : <a href="#">{{ post.author }}</a> / </span>
+                    <span class="post_date">On : <a
+                            href="#">{{ post.created_at|date:'F d, Y' }}</a></span>
+                </div>
+                <footer class="readmore_button">
+                    <a href="{% url 'posts:detail' pk=post.pk %}">Read more</a>
+                </footer>
+            </figcaption>
+        </figure>
+    </article>
+</a>

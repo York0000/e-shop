@@ -1,0 +1,22 @@
+{% load my_tags %}
+{% load static %}
+
+<div class="single-tranding">
+    <a href="{% url 'products:detail' pk=product.pk %}">
+        <div class="tranding-pro-img">
+            <img src="{{ product.image.url }}">
+        </div>
+        <div class="tranding-pro-title">
+            <h3>{{ product.title }}</h3>
+            <h4>Drone</h4>
+        </div>
+        <div class="tranding-pro-price">
+            <div class="price_box">
+                <span class="current_price">${{ product.real_price }}</span>
+                {% if product.is_discount %}
+                    <span class="old_price">${{ product.price }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+</div>
