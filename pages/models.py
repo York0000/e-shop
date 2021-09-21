@@ -30,3 +30,29 @@ class EmployeeModel(models.Model):
     class Meta:
         verbose_name = 'employee'
         verbose_name_plural = 'employees'
+
+
+class FAQModel(models.Model):
+    question = models.TextField()
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQ`s'
+
+
+class LeaveFAQModel(models.Model):
+    question = models.TextField()
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f'{self.name} {self.question}'
+
+    class Meta:
+        verbose_name = 'faq-question'
+        verbose_name_plural = 'faq-questions'

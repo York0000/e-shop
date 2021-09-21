@@ -1,8 +1,9 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, TemplateView, ListView
 
-from pages.forms import ContactModelForm
-from pages.models import EmployeeModel
+from pages.forms import ContactModelForm, FAQModelForm
+from pages.models import EmployeeModel, FAQModel
 from posts.models import PostModel
 
 
@@ -48,3 +49,9 @@ class MiniCartListView(ListView):
 
 class PrivacyTemplateView(TemplateView):
     template_name = 'privacy.html'
+
+
+class FAQListView(ListView):
+    template_name = 'faq.html'
+
+    queryset = FAQModel.objects.all()
